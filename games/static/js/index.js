@@ -22,6 +22,9 @@ $('#originpic').change(function() {
 		data: formdata,
 		success: function(data){
 			console.log('ajax success!');
+			content = JSON.parse(data);
+			console.log(content['img_path']);
+			$('#img_origin').attr('src', content['img_path']);
 		}
 	});
 })

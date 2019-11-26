@@ -1,7 +1,11 @@
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.shortcuts import render
+from django.conf import settings
 import json
-import cv2
+import os
 
 def index(request):
     print(request.is_ajax())
@@ -12,9 +16,9 @@ def index(request):
         '''
         #data:接收到的图片文件
         data=dict(request.FILES)['content'][0]
-        #img_content是图片文件的内容，可直接被opencv操作，类型为bytes
-        img_content = data.read()
-        pass
+        #将问津进行存储，并返回预览
+        path = default_storage.save('static/img/test.png', ContentFile(data.read()))
+        return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path}))
     else:
         '''
         非ajax请求，加载网页
