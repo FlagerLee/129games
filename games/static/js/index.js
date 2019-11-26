@@ -16,8 +16,7 @@ $('#originpic').change(function() {
 	formdata.append('content', file_content);
 	$.ajax({
 		url: "/index/",
-		datatype: "json",
-		type: "post",
+		type: "POST",
 		processData: false,
 		contentType: false,
 		data: formdata,
