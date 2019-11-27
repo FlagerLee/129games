@@ -4,12 +4,6 @@ jQuery(document).ready(function($) {
 
 $('#originpic').change(function() {
 	var formdata = new FormData();
-	/*
-	console.log(typeof($('#originpic').val()));
-	console.log($('#originpic').val());
-	var file = $(this)[0].files;
-	console.log(RegExp.test(file[0].name.toLowerCase()));
-	*/
 	var file_name = $(this).val().split("\\").pop();
 	var file_content = $(this)[0].files[0];
 	formdata.append('name', file_name);
@@ -24,7 +18,9 @@ $('#originpic').change(function() {
 			console.log('ajax success!');
 			content = JSON.parse(data);
 			console.log(content['img_path']);
+			console.log(content['new_img_path'])
 			$('#img_origin').attr('src', content['img_path']);
+			$('#img_new').attr('src', content['new_img_path']);
 		}
 	});
 })

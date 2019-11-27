@@ -4,6 +4,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.conf import settings
+from . import hf
 import json
 import os
 
@@ -16,9 +17,13 @@ def index(request):
         '''
         #data:接收到的图片文件
         data=dict(request.FILES)['content'][0]
-        #将问津进行存储，并返回预览
+        #将问津进行存储，并返回原图预览
         path = default_storage.save('static/img/test.png', ContentFile(data.read()))
-        return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path}))
+        #为图片添加头像框并返回新图预览
+        new_pic_path = hf.add_head_frame(path)
+        print(new_pic_path)
+        return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path, 'new_img_path': '/' + new_pic_path}))
+        #return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path}))
     else:
         '''
         非ajax请求，加载网页
