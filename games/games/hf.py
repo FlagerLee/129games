@@ -17,7 +17,7 @@ def add_head_frame(path: str):
     #获取原图的信息
     rows, columns, channels = origin_pic.shape
     #resize头像框
-    head_frame = cv2.resize(head_frame, (rows, columns))
+    head_frame = cv2.resize(head_frame, (columns, rows))
 
     roi = origin_pic[0:rows, 0:columns]
 
