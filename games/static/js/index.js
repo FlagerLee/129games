@@ -24,3 +24,12 @@ $('#originpic').change(function() {
 		}
 	});
 })
+
+$('#cro').cropper({
+	aspectRatio: 1,
+	viewmode: 1,
+	preview: '#preview',
+	crop: function (e) {
+		console.log(e);
+	}
+});
