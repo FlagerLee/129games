@@ -3,6 +3,24 @@ body
 	background: #dfe6e9;
 }
 
+.picture
+{
+	height: 0.1px;
+}
+
+label {
+	opacity: 1;
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: red;
+}
+
+.picture:focus + label,
+.picture + label:hover {
+    background-color: red;
+}
+
 .center
 {
 	display: flex;
