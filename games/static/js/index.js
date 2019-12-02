@@ -19,11 +19,11 @@ $('#originpic').change(function() {
 			content = JSON.parse(data);
 			console.log(content['img_path']);
 			console.log(content['new_img_path'])
-			$('#img_origin').attr('src', content['img_path']);
+			$('#cro').attr('src', content['img_path']);
 			$('#img_new').attr('src', content['new_img_path']);
 		}
 	});
-})
+});
 
 $('#cro').cropper({
 	aspectRatio: 1,
@@ -32,4 +32,9 @@ $('#cro').cropper({
 	crop: function (e) {
 		console.log(e);
 	}
+});
+
+$('#commit').onclick(function(){
+	var cas = $('#cro').cropper('getCroppedCanvas');
+	var base64 = cas.toDataURL('image/png');
 });

@@ -16,15 +16,16 @@
         <div class="left">
             <input type="file" name="originpic" class="picture" id="originpic">
             <!-- 上传文件 -->
-            <img src="" id="img_origin" height="200px" width="200px">
-            <!-- 显示原图 -->
+        </div>
+        <div class="right">
+            <div align="center" class="col-md-3">
+                <img src="" id="cro" height="400px" width="400px">
+            </div>
+            <div align="center" id="preview" style="text-align: center; width: 600px; height: 600px; overflow: hidden"></div>
+            {% comment %}style里面的内容，width和height改成好看的就行了，但是需要保证正方形。overflow为hidden这一条必须要有。其他的style随便改{% endcomment %}
         </div>
     </div>
-    <div align="center" class="col-md-3">
-        <img src="/static/WechatIMG1.jpeg" id="cro" height="400px" width="400px">
-    </div>
-    <div align="center" id="preview" style="text-align: center; width: 600px; height: 600px; overflow: hidden"></div>
-    {% comment %}style里面的内容，width和height改成好看的就行了，但是需要保证正方形。overflow为hidden这一条必须要有。其他的style随便改{% endcomment %}
+    <button id="commit">确认裁剪<button>
     <div align="center">
         <img src="" id="img_new" height="800px" width="800px">
         <!-- 显示新图 -->
