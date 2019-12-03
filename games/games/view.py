@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import FileResponse
+from django.http import Http404
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.shortcuts import render
@@ -10,32 +11,27 @@ from . import hf
 from . import settings
 import json
 import os
-import random
-sgm = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','o','r','s','t','u','v','w','x','y','z']
-def random_string():
-    s = ''
-    for i in range(32):
-        s += sgm[random.randint(0,25)]
-    return s
+
 def index(request):
-    print(request.is_ajax())
-    if request.session.get('id', '') == '':
-        request.session['id'] = random_string()
     if request.is_ajax():
         '''
         判断是否为ajax请求。
         网站中的ajax请求有上传图片和下载图片。
         '''
         #data:接收到的图片文件
+        code = request.POST['code']
         data=dict(request.FILES)['content'][0]
+        #防止模拟前端发送恶意code
+        try:
+            code = int(code)
+        except Exception:
+            return HttpResponseRedirect(request, 'index.html', {})
         #将问津进行存储，并返回原图预览
-        default_storage.delete('static/img/test' + request.session['id'] + '.png')
-        path = default_storage.save('static/img/test' + request.session['id'] + '.png', ContentFile(data.read()))
-        #为图片添加头像框并返回新图预览
-        new_pic_path = hf.add_head_frame(path)
-        print(new_pic_path)
-        return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path, 'new_img_path': '/' + new_pic_path}))
-        #return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path}))
+        path = 'static/img/' + str(code) + '.png'
+        with open(path, 'wb') as png:
+            png.write(data.read())
+        #返回原图预览
+        return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path}))
     else:
         '''
         非ajax请求，加载网页
@@ -43,19 +39,64 @@ def index(request):
         return render(request, 'index.html', {})
 
 def submit(request):
-    if request.session.get('id', '') == '':
-        request.session['id'] = random_string()
     '''
     提交裁剪过的图片
     '''
     if not request.is_ajax():
         return HttpResponseRedirect('/index/')
     else:
+        code = request.POST['code']
+        print(code)
         data = request.POST['content'].split(',')[1]
         img = b64decode(data)
-        #with open(os.path.join(settings.BASE_DIR, 'static/img/test.png'), 'wb') as f:
-        #    f.write(img)
-        default_storage.delete('static/img/test' + request.session['id'] + '.png')
-        path = default_storage.save('static/img/test' + request.session['id'] + '.png', ContentFile(img))
+        #防止恶意code
+        try:
+            code = int(code)
+        except Exception:
+            return HttpResponseRedirect(request, 'index.html', {})
+        path = 'static/img/cropped_' + str(code) + '.png'
+        with open(path, 'wb') as png:
+            png.write(img)
         new_pic_path = hf.add_head_frame(path)
         return HttpResponse(json.dumps({'code': True, 'new_img_path': '/' + new_pic_path}))
+
+def download(request, code):
+    '''
+    下载请求
+    '''
+    path = settings.BASE_DIR + '/static/img/new_cropped_' + str(code) + '.png'
+    print(path)
+    if os.path.exists(path):
+        content = open(path, 'rb')
+        filename = 'new_image.png'
+        response = FileResponse(content)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="{0}"'.format(filename)
+        return response
+    else:
+        return Http404
+
+
+def deletepic(code):
+    '''
+    删除编码为code的图片
+    '''
+    baseurl = settings.BASE_DIR + '/static/img/'
+    if os.path.exists(baseurl + str(code) + '.png'):
+        os.remove(baseurl + str(code) + '.png')
+    if os.path.exists(baseurl + 'cropped_' + str(code) + '.png'):
+        os.remove(baseurl + 'cropped_' + str(code) + '.png')
+    if os.path.exists(baseurl + 'new_' + str(code) + '.png'):
+        os.remove(baseurl + 'new_' + str(code) + '.png')
+
+def close(request):
+    '''
+    关闭窗口
+    '''
+    print('success')
+    if not request.is_ajax():
+        return HttpResponseRedirect('/index/')
+    else:
+        code = request.POST['code']
+        deletepic(code)
+        return HttpResponse(json.dumps({}))

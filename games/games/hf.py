@@ -24,7 +24,7 @@ def add_head_frame(path: str):
     #头像框转化为灰度图
     hfgrey = cv2.cvtColor(head_frame, cv2.COLOR_BGR2GRAY)
     #从灰度图中提取头像框区域
-    ret, mask = cv2.threshold(hfgrey, 254, 255, cv2.THRESH_BINARY)
+    ret, mask = cv2.threshold(hfgrey, 250, 255, cv2.THRESH_BINARY)
     #取反，提取空白区域
     mask_inv = cv2.bitwise_not(mask)
 

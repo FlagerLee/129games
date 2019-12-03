@@ -18,14 +18,15 @@
             <!-- 上传文件 -->
         </div>
         <div class="right">
-            <div align="center" class="col-md-3">
-                <img src="/static/WechatIMG1.jpeg" id="cro" height="400px" width="400px">
+            <div align="center" id="crop" class="col-md-3">
+                <img src="" id="cro" height="400px" width="400px">
             </div>
             <div align="center" id="preview" style="text-align: center; width: 600px; height: 600px; overflow: hidden"></div>
             {% comment %}style里面的内容，width和height改成好看的就行了，但是需要保证正方形。overflow为hidden这一条必须要有。其他的style随便改{% endcomment %}
         </div>
     </div>
-    <button id="commit">确认裁剪<button>
+    <button id="commit">确认裁剪</button>
+    <button id="download">下载图片</button>
     <div align="center">
         <img src="" id="img_new" height="800px" width="800px">
         <!-- 显示新图 -->
@@ -42,6 +43,7 @@
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/cropper/3.1.6/cropper.js"></script>
+<script src="https://cdn.bootcss.com/downloadjs/1.4.8/download.min.js"></script>
 {% comment %} <script type="text/javascript" src="liveserver-sources/index.js"></script> {% endcomment %}
 <script type="text/javascript" src="/static/js/index.js"></script>
 <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
