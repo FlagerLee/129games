@@ -29,12 +29,29 @@ $('#cro').cropper({
 	aspectRatio: 1,
 	viewmode: 1,
 	preview: '#preview',
-	crop: function (e) {
-		console.log(e);
+	crop: function (data) {
+		console.log(data);
 	}
 });
 
-$('#commit').onclick(function(){
-	var cas = $('#cro').cropper('getCroppedCanvas');
-	var base64 = cas.toDataURL('image/png');
+$('#commit').click(function() {
+	var cas = $('#cro').cropper('getCroppedCanvas').toDataURL('image/png');
+	var formdata = new FormData();
+	var file_content = cas;
+	formdata.append('content', file_content);
+	$.ajax({
+		url: "/submit/",
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: formdata,
+		success: function(data){
+			content = JSON.parse(data);
+			$('#img_new').attr('src', content['new_img_path']);
+		}
+	})
 });
+
+function getRandomCode() {
+	
+}

@@ -4,7 +4,9 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.conf import settings
+from base64 import b64decode
 from . import hf
+from . import settings
 import json
 import os
 
@@ -29,3 +31,18 @@ def index(request):
         非ajax请求，加载网页
         '''
         return render(request, 'index.html', {})
+
+def submit(request):
+    '''
+    提交裁剪过的图片
+    '''
+    if not request.is_ajax():
+        return HttpResponseRedirect('/index/')
+    else:
+        data = request.POST['content'].split(',')[1]
+        img = b64decode(data)
+        #with open(os.path.join(settings.BASE_DIR, 'static/img/test.png'), 'wb') as f:
+        #    f.write(img)
+        path = default_storage.save('static/img/test.png', ContentFile(img))
+        new_pic_path = hf.add_head_frame(path)
+        return HttpResponse(json.dumps({'code': True, 'new_img_path': '/' + new_pic_path}))
