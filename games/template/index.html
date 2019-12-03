@@ -12,33 +12,30 @@
 </head>
 
 <body>
-    <div class="picture center">
-        <div class="left">
+    <div align="center">
+        <img src="/static/img/headframe.png" id="img_new" height="800px" width="800px">
+        <!-- 显示新图 -->
+    </div>
+    <br />
+    <div>
+        <div class="container text-center file">
             <input type="file" name="originpic" class="picture" id="originpic">
+            上传图片
             <!-- 上传文件 -->
         </div>
-        <div class="right">
-            <div align="center" id="crop" class="col-md-3">
+    </div>
+    <div class="picture center">
+        <div class="text-center">
+            <div id="crop" class="crop container">
                 <img src="" id="cro" height="400px" width="400px">
             </div>
-            <div align="center" id="preview" style="text-align: center; width: 600px; height: 600px; overflow: hidden"></div>
             {% comment %}style里面的内容，width和height改成好看的就行了，但是需要保证正方形。overflow为hidden这一条必须要有。其他的style随便改{% endcomment %}
         </div>
     </div>
-    <button id="commit">确认裁剪</button>
-    <button id="download">下载图片</button>
-    <div align="center">
-        <img src="" id="img_new" height="800px" width="800px">
-        <!-- 显示新图 -->
-    </div>
-    <div>
-        <img id="widget1" src="/static/texture/cloth.png">
-        <img id="widget2" src="/static/texture/face.png">
-        <img id="widget3" src="/static/texture/face.png">
-        <img id="widget4" src="/static/texture/cap.png">
-        <img id="widget5" src="/static/texture/lip.png">
-        <img id="widget6" src="/static/texture/eyebrow_l.png">
-        <img id="widget7" src="/static/texture/eyebrow_r.png">
+    <br />
+    <div class="container text-center">
+        <button id="commit" class="btn">确认裁剪</button>
+        <button id="download" class="btn">下载图片</button>
     </div>
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
@@ -48,13 +45,4 @@
 <script type="text/javascript" src="/static/js/index.js"></script>
 <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
-<script>
-    $('#widget1').draggable();
-    $('#widget2').draggable();
-    $('#widget3').draggable();
-    $('#widget4').draggable();
-    $('#widget5').draggable();
-    $('#widget6').draggable();
-    $('#widget7').draggable();
-</script>
 </html>

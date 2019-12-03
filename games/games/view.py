@@ -46,7 +46,6 @@ def submit(request):
         return HttpResponseRedirect('/index/')
     else:
         code = request.POST['code']
-        print(code)
         data = request.POST['content'].split(',')[1]
         img = b64decode(data)
         #防止恶意code
@@ -65,7 +64,6 @@ def download(request, code):
     下载请求
     '''
     path = settings.BASE_DIR + '/static/img/new_cropped_' + str(code) + '.png'
-    print(path)
     if os.path.exists(path):
         content = open(path, 'rb')
         filename = 'new_image.png'
@@ -93,7 +91,6 @@ def close(request):
     '''
     关闭窗口
     '''
-    print('success')
     if not request.is_ajax():
         return HttpResponseRedirect('/index/')
     else:

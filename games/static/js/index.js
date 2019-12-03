@@ -4,7 +4,8 @@ jQuery(document).ready(function($) {
 	$('#cro').cropper({
 		aspectRatio: 1,
 		viewmode: 1,
-		preview: '#preview',
+		scalable: false,
+		minCanvasWidth: 200, 
 		crop: function (data) {
 			console.log(data);
 		}
