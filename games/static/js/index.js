@@ -19,8 +19,39 @@ $('#originpic').change(function() {
 			content = JSON.parse(data);
 			console.log(content['img_path']);
 			console.log(content['new_img_path'])
-			$('#img_origin').attr('src', content['img_path']);
+			$('#cro').attr('src', content['img_path']);
 			$('#img_new').attr('src', content['new_img_path']);
 		}
 	});
-})
+});
+
+$('#cro').cropper({
+	aspectRatio: 1,
+	viewmode: 1,
+	preview: '#preview',
+	crop: function (data) {
+		console.log(data);
+	}
+});
+
+$('#commit').click(function() {
+	var cas = $('#cro').cropper('getCroppedCanvas').toDataURL('image/png');
+	var formdata = new FormData();
+	var file_content = cas;
+	formdata.append('content', file_content);
+	$.ajax({
+		url: "/submit/",
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: formdata,
+		success: function(data){
+			content = JSON.parse(data);
+			$('#img_new').attr('src', content['new_img_path']);
+		}
+	})
+});
+
+function getRandomCode() {
+	
+}

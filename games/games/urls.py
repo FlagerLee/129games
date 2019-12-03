@@ -20,4 +20,5 @@ from . import view
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('index/', view.index),
+    path('submit/', view.submit),
 ]

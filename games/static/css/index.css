@@ -1,6 +1,26 @@
 body
 {
 	background: #dfe6e9;
+	display: block;
+}
+
+.picture
+{
+	height: 0.1px;
+	float: right;
+}
+
+label {
+	opacity: 1;
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: red;
+}
+
+.picture:focus + label,
+.picture + label:hover {
+    background-color: red;
 }
 
 .center

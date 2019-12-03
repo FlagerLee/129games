@@ -9,7 +9,7 @@ def add_head_frame(path: str):
     path是原始图片的路径
     '''
     #头像框路径
-    head_frame_path = 'static/img/head_frame.png'
+    head_frame_path = 'static/img/headframe.png'
     #读取图片
     origin_pic = cv2.imread(path)
     head_frame = cv2.imread(head_frame_path)
@@ -24,7 +24,7 @@ def add_head_frame(path: str):
     #头像框转化为灰度图
     hfgrey = cv2.cvtColor(head_frame, cv2.COLOR_BGR2GRAY)
     #从灰度图中提取头像框区域
-    ret, mask = cv2.threshold(hfgrey, 200, 255, cv2.THRESH_BINARY)
+    ret, mask = cv2.threshold(hfgrey, 254, 255, cv2.THRESH_BINARY)
     #取反，提取空白区域
     mask_inv = cv2.bitwise_not(mask)
 
