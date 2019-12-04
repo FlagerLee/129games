@@ -19,15 +19,16 @@
     <br />
     <div>
         <div class="container text-center file">
-            <input type="file" name="originpic" class="picture" id="originpic">
+            <input type="file" name="originpic" class="picture" id="originpic" accept=".png,.gif,.jpg,.jpeg,.bmp">
             上传图片
             <!-- 上传文件 -->
         </div>
     </div>
+    <br />
     <div class="picture center">
         <div class="text-center">
             <div id="crop" class="crop container">
-                <img src="" id="cro" height="400px" width="400px">
+                <img src="" id="cro">
             </div>
             {% comment %}style里面的内容，width和height改成好看的就行了，但是需要保证正方形。overflow为hidden这一条必须要有。其他的style随便改{% endcomment %}
         </div>

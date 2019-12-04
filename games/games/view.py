@@ -36,6 +36,10 @@ def index(request):
         path = 'static/img/' + str(code) + '.png'
         with open(path, 'wb') as png:
             png.write(data.read())
+        size = os.path.getsize(settings.BASE_DIR + '/' + path)
+        if size > 5242880: #5M
+            os.remove(settings.BASE_DIR + '/' + path)
+            return HttpResponse(status=413)
         #返回原图预览
         return HttpResponse(json.dumps({'code': True, 'img_path': '/' + path}))
     else:

@@ -3,12 +3,10 @@ jQuery(document).ready(function($) {
 	setCookie(code);
 	$('#cro').cropper({
 		aspectRatio: 1,
-		viewmode: 2,
-		scalable: false,
+		viewmode: 1,
 		minCropBoxHeight: 200,
 		minCropBoxWidth: 200,
 		crop: function (data) {
-			console.log(data);
 		}
 	});
 	$("#download").attr("disabled", true);
@@ -53,16 +51,21 @@ $('#originpic').change(function() {
 		data: formdata,
 		success: function(data){
 			content = JSON.parse(data);
-			$("#cro").cropper("replace", content['img_path']);
+			var timestamp = new Date().getTime();
+			$("#cro").cropper("replace", content['img_path'] + '?t=' + timestamp);
 			$("#cro").attr("hidden", false);
 			$("#commit").attr("hidden", false);
 			$("#download").attr("hidden", false);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			if(XMLHttpRequest.status == 413 || XMLHttpRequest.status == 400) alert('上传图片不能超过5M');
+			else alert(XMLHttpRequest.status);
 		}
 	});
 });
 
 $('#commit').click(function() {
-	var cas = $('#cro').cropper('getCroppedCanvas').toDataURL('image/png');
+	var cas = $('#cro').cropper('getCroppedCanvas').toDataURL('image/jpeg');
 	var formdata = new FormData();
 	var file_content = cas;
 	var code = getCode();
@@ -79,6 +82,10 @@ $('#commit').click(function() {
 			var timestamp = new Date().getTime();
 			$('#img_new').attr('src', content['new_img_path'] + '?t=' + timestamp);
 			$("#download").attr("disabled", false);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			if(XMLHttpRequest.status == 413 || XMLHttpRequest.status == 400) alert("上传图片不能超过5M");
+			else alert(XMLHttpRequest.status);
 		}
 	});
 });
