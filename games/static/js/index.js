@@ -12,6 +12,9 @@ jQuery(document).ready(function($) {
 		}
 	});
 	$("#download").attr("disabled", true);
+	$("#cro").attr("hidden", true);
+	$("#commit").attr("hidden", true);
+	$("#download").attr("hidden", true);
 });
 
 function getRandomCode() {
@@ -51,6 +54,9 @@ $('#originpic').change(function() {
 		success: function(data){
 			content = JSON.parse(data);
 			$("#cro").cropper("replace", content['img_path']);
+			$("#cro").attr("hidden", false);
+			$("#commit").attr("hidden", false);
+			$("#download").attr("hidden", false);
 		}
 	});
 });
