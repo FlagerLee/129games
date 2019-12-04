@@ -5,11 +5,13 @@ jQuery(document).ready(function($) {
 		aspectRatio: 1,
 		viewmode: 2,
 		scalable: false,
-		minCanvasWidth: 200, 
+		minCropBoxHeight: 200,
+		minCropBoxWidth: 200,
 		crop: function (data) {
 			console.log(data);
 		}
 	});
+	$("#download").attr("disabled", true);
 });
 
 function getRandomCode() {
@@ -70,7 +72,8 @@ $('#commit').click(function() {
 			content = JSON.parse(data);
 			$('#img_new').attr('src', content['new_img_path']);
 		}
-	})
+	});
+	$("#download").attr("disabled", false);
 });
 
 $('#download').click(function() {

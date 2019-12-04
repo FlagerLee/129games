@@ -95,5 +95,9 @@ def close(request):
         return HttpResponseRedirect('/index/')
     else:
         code = request.POST['code']
+        try:
+            code = int(code)
+        except Exception:
+            return HttpResponseRedirect(request, 'index.html', {})
         deletepic(code)
         return HttpResponse(json.dumps({}))
