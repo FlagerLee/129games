@@ -12,6 +12,12 @@ from . import settings
 import json
 import os
 
+def root(request):
+    '''
+    跳转到index
+    '''
+    return HttpResponseRedirect('/index/')
+
 def index(request):
     if request.is_ajax():
         '''
@@ -25,7 +31,7 @@ def index(request):
         try:
             code = int(code)
         except Exception:
-            return HttpResponseRedirect(request, 'index.html', {})
+            return HttpResponseRedirect('/index/')
         #将问津进行存储，并返回原图预览
         path = 'static/img/' + str(code) + '.png'
         with open(path, 'wb') as png:
@@ -52,7 +58,7 @@ def submit(request):
         try:
             code = int(code)
         except Exception:
-            return HttpResponseRedirect(request, 'index.html', {})
+            return HttpResponseRedirect('/index/')
         path = 'static/img/cropped_' + str(code) + '.png'
         with open(path, 'wb') as png:
             png.write(img)
@@ -98,6 +104,6 @@ def close(request):
         try:
             code = int(code)
         except Exception:
-            return HttpResponseRedirect(request, 'index.html', {})
+            return HttpResponseRedirect('/index/')
         deletepic(code)
         return HttpResponse(json.dumps({}))
