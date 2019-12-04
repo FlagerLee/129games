@@ -9,7 +9,7 @@ def add_head_frame(path: str):
     path是原始图片的路径
     '''
     #头像框路径
-    head_frame_path = 'static/img/headframe.png'
+    head_frame_path = 'static/texture/headframe.png'
     #读取图片
     origin_pic = cv2.imread(path)
     head_frame = cv2.imread(head_frame_path)
