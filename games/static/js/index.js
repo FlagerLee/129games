@@ -1,13 +1,47 @@
 jQuery(document).ready(function($) {
-	console.log('hello, world!')
+	var code = getRandomCode();
+	setCookie(code);
+	$('#cro').cropper({
+		aspectRatio: 1,
+		viewmode: 2,
+		scalable: false,
+		minCropBoxHeight: 200,
+		minCropBoxWidth: 200,
+		crop: function (data) {
+			console.log(data);
+		}
+	});
+	$("#download").attr("disabled", true);
 });
+
+function getRandomCode() {
+	//生成随机序列号
+	return ((new Date()).getTime() * 1000 + Math.round(Math.random() * 1000)).toString();
+}
+
+function setCookie(code) {
+	time = 1000000; //cookie过期时间
+	var expires = "";
+	var date = new Date();
+	date.setTime(date.getTime() + time * 1000);
+	expires = "; expires=" + date.toGMTString();
+	document.cookie = "username=" + code + expires + "; path=/;";
+}
+
+function getCode() {
+	//获取cookie中的code
+	var cookie = document.cookie;
+	cookie = cookie.split(';')[0];
+	cookie = cookie.split('=')[1];
+	return cookie;
+}
 
 $('#originpic').change(function() {
 	var formdata = new FormData();
-	var file_name = $(this).val().split("\\").pop();
 	var file_content = $(this)[0].files[0];
-	formdata.append('name', file_name);
+	var code = getCode();
 	formdata.append('content', file_content);
+	formdata.append('code', code);
 	$.ajax({
 		url: "/index/",
 		type: "POST",
@@ -15,26 +49,57 @@ $('#originpic').change(function() {
 		contentType: false,
 		data: formdata,
 		success: function(data){
-			console.log('ajax success!');
 			content = JSON.parse(data);
-			console.log(content['img_path']);
-			console.log(content['new_img_path'])
-			$('#cro').attr('src', content['img_path']);
-			$('#img_new').attr('src', content['new_img_path']);
+			$("#cro").cropper("replace", content['img_path']);
 		}
 	});
 });
 
-$('#cro').cropper({
-	aspectRatio: 1,
-	viewmode: 1,
-	preview: '#preview',
-	crop: function (e) {
-		console.log(e);
-	}
+$('#commit').click(function() {
+	var cas = $('#cro').cropper('getCroppedCanvas').toDataURL('image/png');
+	var formdata = new FormData();
+	var file_content = cas;
+	var code = getCode();
+	formdata.append('content', file_content);
+	formdata.append('code', code);
+	$.ajax({
+		url: "/submit/",
+		type: "POST",
+		processData: false,
+		contentType: false,
+		data: formdata,
+		success: function(data){
+			content = JSON.parse(data);
+			$('#img_new').attr('src', content['new_img_path']);
+		}
+	});
+	$("#download").attr("disabled", false);
 });
 
-$('#commit').onclick(function(){
-	var cas = $('#cro').cropper('getCroppedCanvas');
-	var base64 = cas.toDataURL('image/png');
+$('#download').click(function() {
+	//下载处理好的图片
+	var cookie = getCode();
+	window.open("/download/" + String(cookie))
+	var formdata = new FormData();
+	formdata.append('code', cookie);
+	$.ajax({
+		url: "/download/" + String(cookie),
+		type: "POST",
+		processData: false,
+		contentType: false,
+	})
 });
+
+$(window).on('beforeunload', function() {
+	var code = getCode();
+	var formdata = new FormData();
+	formdata.append('code', code);
+	$.ajax({
+		url: "/close/",
+		type: "POST",
+		processData: false,
+		contentType: false,
+		async: false,
+		data: formdata,
+	});
+})
