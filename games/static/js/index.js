@@ -76,7 +76,8 @@ $('#commit').click(function() {
 		data: formdata,
 		success: function(data){
 			content = JSON.parse(data);
-			$('#img_new').attr('src', content['new_img_path']);
+			var timestamp = new Date().getTime();
+			$('#img_new').attr('src', content['new_img_path'] + '?t=' + timestamp);
 			$("#download").attr("disabled", false);
 		}
 	});
