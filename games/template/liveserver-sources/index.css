@@ -1,0 +1,14 @@
+body
+{
+	background: #dfe6e9;
+}
+
+.center
+{
+	display: flex;
+	justify-content: center;
+	border-left: 20%;
+	border-right: 20%;
+	border-top: 40%;
+}
+
