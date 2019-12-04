@@ -84,8 +84,8 @@ def deletepic(code):
         os.remove(baseurl + str(code) + '.png')
     if os.path.exists(baseurl + 'cropped_' + str(code) + '.png'):
         os.remove(baseurl + 'cropped_' + str(code) + '.png')
-    if os.path.exists(baseurl + 'new_' + str(code) + '.png'):
-        os.remove(baseurl + 'new_' + str(code) + '.png')
+    if os.path.exists(baseurl + 'new_cropped_' + str(code) + '.png'):
+        os.remove(baseurl + 'new_cropped_' + str(code) + '.png')
 
 def close(request):
     '''

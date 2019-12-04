@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
 	setCookie(code);
 	$('#cro').cropper({
 		aspectRatio: 1,
-		viewmode: 1,
+		viewmode: 2,
 		scalable: false,
 		minCanvasWidth: 200, 
 		crop: function (data) {
@@ -48,7 +48,6 @@ $('#originpic').change(function() {
 		data: formdata,
 		success: function(data){
 			content = JSON.parse(data);
-			//$('#cro').attr('src', content['img_path']);
 			$("#cro").cropper("replace", content['img_path']);
 		}
 	});
@@ -85,18 +84,19 @@ $('#download').click(function() {
 		type: "POST",
 		processData: false,
 		contentType: false,
-		/*
-		success: function(data){
-			console.log(data);
-			content = JSON.parse(data);
-			try {
-				success = content['success'];
-			} catch (error) {
-				return;
-			}
-			alert("不存在图片！");
-		}
-		*/
 	})
-	//download(image, 'image.png', 'imgae/png');
 });
+
+$(window).on('beforeunload', function() {
+	var code = getCode();
+	var formdata = new FormData();
+	formdata.append('code', code);
+	$.ajax({
+		url: "/close/",
+		type: "POST",
+		processData: false,
+		contentType: false,
+		async: false,
+		data: formdata,
+	});
+})
