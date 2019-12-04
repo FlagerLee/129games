@@ -19,6 +19,7 @@ from . import view
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
+    path('/', view.root),
     path('index/', view.index),
     path('submit/', view.submit),
     path('download/<code>', view.download),

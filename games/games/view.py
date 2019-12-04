@@ -12,6 +12,12 @@ from . import settings
 import json
 import os
 
+def root(request):
+    '''
+    跳转到index
+    '''
+    return HttpResponseRedirect(request, 'index.html', {})
+
 def index(request):
     if request.is_ajax():
         '''
